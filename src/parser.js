@@ -40,7 +40,6 @@ function addWPFrontMatter(posts) {
         post.frontmatter.wp_id = post.meta.id;
         post.frontmatter.wp_slug = post.meta.slug;
         post.frontmatter.wp_type = post.meta.type;
-        post.frontmatter.postmeta = post.meta.postmeta;
     });
 }
 
@@ -60,11 +59,6 @@ function getPostTypes(data, config) {
 
 function getItemsOfType(data, type) {
 	return data.rss.channel[0].item.filter(item => item.post_type[0] === type);
-}
-
-function getPostExcerpt(post) {
-    const excerpt = post.encoded[1].replace(/(\r\n|\n|\r)/gm, " ");
-    return excerpt;
 }
 
 function collectPosts(data, postTypes, config) {
@@ -93,7 +87,7 @@ function collectPosts(data, postTypes, config) {
                     pubDatetime: getPostDate(post),
                     categories: getCategories(post),
                     tags: getTags(post),
-					excerpt: getPostExcerpt(post) ||'',
+                    description: getPostDescription(post) || "",
                 },
                 content: translator.getPostContent(
                     post,
@@ -121,6 +115,16 @@ function getPostId(post) {
 
 function getPostSlug(post) {
 	return decodeURIComponent(post.post_name[0]);
+}
+
+function getPostDescription(post) {
+	const turndownService = translator.initTurndownService();
+	const content = post.encoded[0];
+	let description =
+        content.split("<!--more-->")[0].split("</p>")[0] + "</p>";
+	description = turndownService.turndown(description);
+
+	return description || ''
 }
 
 function getPostCoverImageId(post) {
