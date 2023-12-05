@@ -1,14 +1,31 @@
 # wordpress-export-to-markdown
 
+> [!NOTE]
+> This is a fork of [the project](https://github.com/lonekorean/wordpress-export-to-markdown), containing unpublished changes, both my own and those of others [who submitted changes via pull reguests](https://github.com/lonekorean/wordpress-export-to-markdown/pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc)
+
+----
+
+## Changes
+
+- addeds slug to frontmatter
+- added description to frontmatter (based on the paragraphs preceding <!--MORE-->'s comment)
+- added support for `webp` - [PR: 82](https://github.com/lonekorean/wordpress-export-to-markdown/pull/82)
+- added Wordpress Metadata to frontmatter - [PR: 96](https://github.com/lonekorean/wordpress-export-to-markdown/pull/96)
+
+---
+
+### Original Readme
+
 A script that converts a WordPress export XML file into Markdown files suitable for a static site generator ([Gatsby](https://www.gatsbyjs.org/), [Hugo](https://gohugo.io/), [Jekyll](https://jekyllrb.com/), etc.).
 
 Each post is saved as a separate Markdown file with appropriate frontmatter. Images are also downloaded and saved. Embedded content from YouTube, Twitter, CodePen, etc. is carefully preserved.
 
 ![wordpress-export-to-markdown running in a terminal](https://user-images.githubusercontent.com/1245573/72686026-3aa04280-3abe-11ea-92c1-d756a24657dd.gif)
 
-## Quick Start
+### Quick Start
 
 You'll need:
+
 - [Node.js](https://nodejs.org/) v12.14 or later
 - Your [WordPress export file](https://wordpress.org/support/article/tools-export-screen/) (be sure to export "All content" if you want to save images and/or pages)
 
@@ -16,39 +33,39 @@ It is recommended that you drop your WordPress export file into the same directo
 
 You can run this script immediately in your terminal with `npx`:
 
-```
+```bash
 npx wordpress-export-to-markdown
 ```
 
 Or you can clone and run (this makes repeated runs faster and allows you to tinker with the code). After cloning this repo, open your terminal to the package's directory and run:
 
-```
+```bash
 npm install && node index.js
 ```
 
 Either way you run it, the script will start the wizard. Answer the questions and off you go!
 
-## Command Line
+### Command Line
 
 The wizard makes it easy to configure your options, but you can also do so via the command line if you want. For example, the following will give you [Jekyll](https://jekyllrb.com/)-style output in terms of folder structure and filenames.
 
 Using `npx`:
 
-```
+```bash
 npx wordpress-export-to-markdown --post-folders=false --prefix-date=true
 ```
 
 Using a locally cloned repo:
 
-```
+```bash
 node index.js --post-folders=false --prefix-date=true
 ```
 
 The wizard will still ask you about any options not specifed on the command line. To skip the wizard entirely and use default values for unspecified options, add `--wizard=false`.
 
-## Options
+### Options
 
-### Use wizard?
+#### Use wizard?
 
 - Argument: `--wizard`
 - Type: `boolean`
@@ -56,7 +73,7 @@ The wizard will still ask you about any options not specifed on the command line
 
 Enable to have the script prompt you for each option. Disable to skip the wizard and use default values for any options not specified via the command line.
 
-### Path to WordPress export file?
+#### Path to WordPress export file?
 
 - Argument: `--input`
 - Type: `file` (as a path string)
@@ -64,7 +81,7 @@ Enable to have the script prompt you for each option. Disable to skip the wizard
 
 The path to the WordPress export file that you want to parse. It is recommended that you drop your WordPress export file into the same directory that you run this script from so it's easy to find.
 
-### Path to output folder?
+#### Path to output folder?
 
 - Argument: `--output`
 - Type: `folder` (as a path string)
@@ -72,7 +89,7 @@ The path to the WordPress export file that you want to parse. It is recommended 
 
 The path to the output directory where Markdown and image files will be saved. If it does not exist, it will be created for you.
 
-### Create year folders?
+#### Create year folders?
 
 - Argument: `--year-folders`
 - Type: `boolean`
@@ -80,7 +97,7 @@ The path to the output directory where Markdown and image files will be saved. I
 
 Whether or not to organize output files into folders by year.
 
-### Create month folders?
+#### Create month folders?
 
 - Argument: `--month-folders`
 - Type: `boolean`
@@ -88,7 +105,7 @@ Whether or not to organize output files into folders by year.
 
 Whether or not to organize output files into folders by month. You'll probably want to combine this with `--year-folders` to organize files by year then month.
 
-### Create a folder for each post?
+#### Create a folder for each post?
 
 - Argument: `--post-folders`
 - Type: `boolean`
@@ -119,7 +136,7 @@ If `false`, the post slug is used to name the post's Markdown file. These files 
 
 Either way, this can be combined with with `--year-folders` and `--month-folders`, in which case the above output will be organized under the appropriate year and month folders.
 
-### Prefix post folders/files with date?
+#### Prefix post folders/files with date?
 
 - Argument: `--prefix-date`
 - Type: `boolean`
@@ -139,7 +156,7 @@ If `--post-folders` is `false`, this affects the file.
     2019-10-14-first-post.md
     2019-10-23-second-post.md
 
-### Save images attached to posts?
+#### Save images attached to posts?
 
 - Argument: `--save-attached-images`
 - Type: `boolean`
@@ -147,7 +164,7 @@ If `--post-folders` is `false`, this affects the file.
 
 Whether or not to download and save images attached to posts. Generally speaking, these are images that were uploaded by using **Add Media** or **Set Featured Image** when editing a post in WordPress. Images are saved into `/images`.
 
-### Save images scraped from post body content?
+#### Save images scraped from post body content?
 
 - Argument: `--save-scraped-images`
 - Type: `boolean`
@@ -155,7 +172,7 @@ Whether or not to download and save images attached to posts. Generally speaking
 
 Whether or not to download and save images scraped from `<img>` tags in post body content. Images are saved into `/images`. The `<img>` tags are updated to point to where the images are saved.
 
-### Include custom post types and pages?
+#### Include custom post types and pages?
 
 - Argument: `--include-other-types`
 - Type: `boolean`
@@ -163,7 +180,7 @@ Whether or not to download and save images scraped from `<img>` tags in post bod
 
 Some WordPress sites make use of a `"page"` post type and/or custom post types. Set this to `true` to include these post types in the results. Posts will be organized into post type folders.
 
-## Advanced Settings
+### Advanced Settings
 
 You can edit [settings.js](https://github.com/lonekorean/wordpress-export-to-markdown/blob/master/src/settings.js) to tweak advanced settings. This includes things like throttling image downloads or customizing the date format in frontmatter.
 
